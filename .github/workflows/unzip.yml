@@ -1,0 +1,22 @@
+name: Unzip project
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unzip and move files
+        run: |
+          unzip -q mtantny-hub.zip
+          cp -a mtantny-hub/. .
+          rm -rf mtantny-hub mtantny-hub.zip
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Extract project files"
+          git push
